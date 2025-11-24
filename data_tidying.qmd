@@ -22,22 +22,8 @@ spotify_songs_cleaned <- spotify_songs |>
   mutate(ranking = percent_rank(track_popularity)*100) |>
   filter(ranking >= 90, str_detect(track_name,
            'Remix|Remaster|Remastered|REMIX|remix') == FALSE) |>
-  arrange(desc(ranking))
+  arrange(desc(ranking)) |>
+  unique()
 ```
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
