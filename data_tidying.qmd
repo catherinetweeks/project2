@@ -7,6 +7,50 @@ format: html
 ## Data Tidying
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+
 # Import libraries and set up
+
+library(tidyverse)
+library(lubridate)
+
+spotify_songs_raw <- read.csv("spotify_songs.csv")
 ```
 
+
+We can see that there are some repeat tracks in this data set, since the number of observations is greater than the number of unique track ids.
+
+```{r}
+paste("Number of Tracks: ", nrow(spotify_songs_raw))
+paste("Number of Unique Tracks: ", length(unique(spotify_songs_raw$track_id)))
+```
+
+### Data Wrangling
+
+```{r}
+# Data wrangling
+
+spotify_songs_cleaned <- spotify_songs_raw |>
+  mutate(track_album_release_date = ymd(track_album_release_date)) |>
+  select(track_id, track_name, track_artist, track_popularity, track_album_release_date, danceability, energy, key,
+         loudness, mode, valence, tempo, duration_ms) |>
+  filter(year(track_album_release_date) == 2019) |>
+  filter(str_detect(track_name,
+                    "Remix|Remaster|Remastered|REMIX|remix") == FALSE) |>
+  unique() |>
+  mutate(song_percentile = percent_rank(track_popularity)*100) |>
+  filter(song_percentile >= 90) |>
+  arrange(desc(song_percentile))
+
+```
+Steps taken in data wrangling:
+
+- changed the variable `track_album_release_date` to a `Date` object
+- removed the variables that weren't of interest to our project
+- filtered the data to only tracks from 2019
+- removed all remixes and remastered versions of tracks
+- removed all duplicate tracks
+- calculated the popularity of each track
+- filtered the data to only the top 10% of tracks
