@@ -8,5 +8,36 @@ format: html
 
 ```{r}
 # Import libraries and set up
+library(tidyverse)
+library(readr)
+library(lubridate)
+
+spotify_songs <- read.csv("spotify_songs.csv")
+
+
+spotify_songs_cleaned <- spotify_songs |> 
+  mutate(track_album_release_date = ymd(track_album_release_date)) |>
+  select(track_name, track_artist, track_popularity, track_album_release_date, playlist_genre, danceability, energy, loudness, speechiness, instrumentalness, liveness, tempo) |>
+  filter(year(track_album_release_date) == 2019) |>
+  mutate(ranking = percent_rank(track_popularity)*100) |>
+  filter(ranking >= 90, str_detect(track_name,
+           'Remix|Remaster|Remastered|REMIX|remix') == FALSE) |>
+  arrange(desc(ranking))
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
