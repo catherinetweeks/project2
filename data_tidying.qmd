@@ -1,0 +1,12 @@
+---
+title: "Project 2: Data Tidying"
+author: "Lucy Watts, Natalie Lau, Catherine Weeks, and Nandir Altansukh"
+format: html
+---
+
+## Data Tidying
+
+```{r}
+# Import libraries and set up
+```
+
