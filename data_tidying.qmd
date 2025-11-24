@@ -7,21 +7,50 @@ format: html
 ## Data Tidying
 
 ```{r}
-# Import libraries and set up
+#| warning: false
+#| message: false
+#| echo: false
+
 library(tidyverse)
-library(readr)
 library(lubridate)
+
+spotify_songs_raw <- read.csv("spotify_songs.csv")
 ```
+
+
+We can see that there are some repeat tracks in this data set, since the number of observations is greater than the number of unique track ids.
 
 ```{r}
-spotify_songs_raw <- read.csv("spotify_songs.csv")
+paste("Number of Tracks: ", nrow(spotify_songs_raw))
+paste("Number of Unique Tracks: ", length(unique(spotify_songs_raw$track_id)))
+```
+
+### Data Wrangling
+
+```{r}
+# Data wrangling
 
 spotify_songs_cleaned <- spotify_songs_raw |>
-  mutate(release_date = ymd(track_album_release_date)) |>
-  select(track_id, track_name, track_artist, track_popularity, release_date, danceability, energy, key, loudness, mode, tempo) |>
-  filter(year(release_date) == 2019, str_detect(track_name, 'Remix|Remaster|Remastered|REMIX|remix') == FALSE) |>
+  mutate(track_album_release_date = ymd(track_album_release_date)) |>
+  select(track_id, track_name, track_artist, track_popularity, track_album_release_date, danceability, energy, key,
+         loudness, mode, valence, tempo, duration_ms) |>
+  filter(year(track_album_release_date) == 2019) |>
+  filter(str_detect(track_name,
+                    "Remix|Remaster|Remastered|REMIX|remix") == FALSE) |>
   unique() |>
-  mutate(ranking = percent_rank(track_popularity)*100) |>
-  filter(ranking >= 90) |>
-  arrange(desc(ranking))
+  mutate(song_percentile = percent_rank(track_popularity)*100) |>
+  filter(song_percentile >= 90) |>
+  arrange(desc(song_percentile))
+
 ```
+Steps taken in data wrangling:
+
+- changed the variable `track_album_release_date` to a `Date` object
+- removed the variables that weren't of interest to our project
+- filtered the data to only tracks from 2019
+- removed all remixes and remastered versions of tracks
+- removed all duplicate tracks
+- calculated the popularity of each track
+- filtered the data to only the top 10% of tracks
+
+NOTE: There are still some duplicate songs, songs that were released first as a single and then as part of an album, and therefore have different track ids.
