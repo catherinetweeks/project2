@@ -64,11 +64,11 @@ ggplot(spotify_songs_cleaned, aes(x = key)) +
 Probably no relationship between popular songs and their key?
 
 ```{r}
-ggplot(spotify_songs_cleaned, aes(x = energy)) +
+ggplot(spotify_songs_cleaned, aes(x = loudness)) +
   geom_histogram(bins = 20) +
   theme_minimal() + 
   labs(title = "Analysis of keys in top songs", 
-       x = "Energy")
+       x = "Loudness")
 ```
 
-It looks like higher energy songs are popular
+It looks like louder songs are popular
