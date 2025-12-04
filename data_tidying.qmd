@@ -17,7 +17,8 @@ spotify_songs <- read.csv("spotify_songs.csv")
 
 spotify_songs_cleaned <- spotify_songs |> 
   mutate(track_album_release_date = ymd(track_album_release_date)) |>
-  select(track_name, track_artist, track_popularity, track_album_release_date, playlist_genre, danceability, energy, loudness, speechiness, instrumentalness, liveness, tempo) |>
+  select(track_id, track_name, track_artist, track_popularity, track_album_release_date, danceability, energy, key,
+         loudness, mode, valence, tempo, duration_ms) |>
   filter(year(track_album_release_date) == 2019) |>
   mutate(ranking = percent_rank(track_popularity)*100) |>
   filter(ranking >= 90, str_detect(track_name,
@@ -25,5 +26,10 @@ spotify_songs_cleaned <- spotify_songs |>
   arrange(desc(ranking)) |>
   unique()
 ```
+ 
+ 
+Exploratory analysis part! To my understanding we’re trying to discover possible relationships and trends
+ 
+ 
  
 
