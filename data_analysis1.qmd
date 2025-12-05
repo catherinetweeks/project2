@@ -11,6 +11,7 @@ format: html
 #| message: false
 #| echo: false
 
+# Set Up
 library(tidyverse)
 library(lubridate)
 
@@ -72,3 +73,31 @@ ggplot(spotify_songs_cleaned, aes(x = loudness)) +
 ```
 
 It looks like louder songs are popular
+```
+
+### Mode vs Popularity
+
+```{r}
+# Major is 1, minor is 0
+
+mode_popularity <- spotify_songs_cleaned |>
+  group_by(mode) |>
+  summarize(num_songs = n(),
+            avg_popularity = mean(track_popularity))
+
+mode_popularity
+
+spotify_songs_cleaned |>
+  mutate(mode = factor(mode, labels = c("minor", "major"))) |>
+  ggplot(aes(x = track_popularity, group = mode, color = mode)) +
+  geom_density()
+```
+
+### Valence vs Popularity
+
+```{r}
+spotify_songs_cleaned |>
+  ggplot(aes(x = valence, y = track_popularity)) +
+  geom_point()
+```
+
