@@ -15,7 +15,7 @@ format: html
 library(tidyverse)
 library(lubridate)
 
-
+spotify_songs_cleaned <- read_csv("spotify_cleaned.csv")
 ```
 Exploratory Variables (Danceability and Energy)
 ```{r}
@@ -81,12 +81,12 @@ Probably no relationship between popular songs and their key?
 ggplot(spotify_songs_cleaned, aes(x = loudness)) +
   geom_histogram(bins = 20) +
   theme_minimal() + 
-  labs(title = "Analysis of keys in top songs", 
+  labs(title = "Analysis of loudness in top songs", 
        x = "Loudness")
 ```
 
 It looks like louder songs are popular
-```
+
 Tempo in comparison to popularity
 ```{r}
 ggplot(data = spotify_songs_cleaned,
@@ -166,5 +166,9 @@ spotify_songs_cleaned |>
 spotify_songs_cleaned |>
   ggplot(aes(x = valence, y = track_popularity)) +
   geom_point()
+
+spotify_songs_cleaned |>
+  ggplot(aes(x = valence)) +
+  geom_histogram()
 ```
 
