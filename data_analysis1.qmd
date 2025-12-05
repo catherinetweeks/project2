@@ -18,11 +18,26 @@ library(lubridate)
 spotify_songs_cleaned <- read_csv("spotify_cleaned.csv")
 ```
 
-Exploratory Variables (Danceability and Energy)
+#### Danceability
+
+@fig-danceability looks at the relationship between danceability and track popularity. It seems as though a lot of the most popular songs are clustered around the 0.75 value of danceability.
+
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| include: false
+
 spotify_songs_cleaned |>
-select(track_popularity, danceability, energy) |>
-cor(use = "complete.obs")
+select(track_popularity, danceability, energy)
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-danceability
+#| fig-cap: "Track danceability and popularity."
 
 
 spotify_songs_cleaned |>
@@ -32,8 +47,20 @@ labs(
 title = "Danceability vs Track Popularity (Top 10% of 2019 Songs)",
 x = "Danceability",
 y = "Track Popularity"
-)
+) + theme_minimal()
 
+```
+
+#### Energy
+
+@fig-energy looks at the energy of a track and its popularity. It looks similar to our danceability plot, with a lot of popular songs grouping around the 0.75 Energy mark.
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-energy
+#| fig-cap: "Track energy and popularity."
 spotify_songs_cleaned |>
 ggplot(aes(x = energy, y = track_popularity)) +
 geom_point(alpha = 0.6) +
@@ -41,66 +68,69 @@ labs(
 title = "Energy vs Track Popularity (Top 10% of 2019 Songs)",
 x = "Energy",
 y = "Track Popularity"
-)
-
+) + theme_minimal()
 ```
 
-Visualizing Key and Loudness
+#### Key
+
+@fig-key shows the distribution of key in our top songs. While some keys are more popular than others, it doesn't appear as though there's any type of relationship between key and popularity of a song.
 
 ```{r}
-ggplot(spotify_songs_cleaned, aes(x = key, y = track_popularity)) +
-  geom_point(position = position_jitter(seed=100)) +
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-key
+#| fig-cap: "Track key and popularity."
+ggplot(spotify_songs_cleaned, aes(x = key)) +
+  geom_bar() +
   theme_minimal() + 
-  labs(title = "Key and Track Popularity", 
-       x = "Key",
-       y = "Track Popularity")
+  labs(title = "Key vs Track Popularity (Top 10% of 2019 Songs)", 
+       x = "Key")
 ```
 
+#### Loudness
+
+@fig-loud shows the correlation between loudness and track popularity. It appears as though songs with a loudness closer to 0 but around -5 make up the most popular 10% of songs in 2019.
+
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-loud
+#| fig-cap: "Track loudness and popularity."
 ggplot(spotify_songs_cleaned, aes(x = loudness, y = track_popularity)) +
-  #geom_point(position = position_jitter(seed=100)) +
-  geom_point(position = position_jitter(seed=100)) +
+  geom_point() +
   theme_minimal() + 
-  labs(title = "Loudness and Track Popularity", 
+  labs(title = "Loudness vs Track Popularity (Top 10% of 2019 Songs)",
        x = "Loudness",
        y = "Track Popularity")
 ```
 
-Different visualizations
+#### Tempo
+
+@fig-tempo shows the relationship between tempo and track popularity. There seems to be a potential very weak relationship between these two variables, based on the spread of our scatterplot. Overall, songs that have tempos around 100 bpm seem to be more popular. There are a few songs around the 175 bmp that are more popular.
 
 ```{r}
-ggplot(spotify_songs_cleaned, aes(x = key)) +
-  geom_bar() +
-  theme_minimal() + 
-  labs(title = "Analysis of keys in top songs", 
-       x = "Key")
-```
-
-Probably no relationship between popular songs and their key?
-
-```{r}
-ggplot(spotify_songs_cleaned, aes(x = loudness)) +
-  geom_histogram(bins = 20) +
-  theme_minimal() + 
-  labs(title = "Analysis of loudness in top songs", 
-       x = "Loudness")
-```
-
-It looks like louder songs are popular
-
-Tempo in comparison to popularity
-```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-tempo
+#| fig-cap: "Track tempo and popularity."
 ggplot(data = spotify_songs_cleaned,
        aes(x = tempo, y = track_popularity)) +
-  geom_point(alpha = 2, color = "cornflowerblue") +
-  labs(title = "Tempo vs Popularity",
+  geom_point() +
+  labs(title = "Tempo vs Track Popularity (Top 10% of 2019 Songs)",
        x = "Tempo",
        y = "Popularity") +
   theme_minimal()
 ```
-songs that have tempos around 100 bpm seem to be more popular. There are a few songs around the 175 bmp that are more popular.
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: tbl-tempo
+library(knitr)
 spofity_songs_summary <- spotify_songs_cleaned |>
   group_by(tempo) |>
   summarise(
@@ -109,43 +139,46 @@ spofity_songs_summary <- spotify_songs_cleaned |>
     min_pop = min(track_popularity, na.rm = TRUE),
     number_of_songs = n()
   )
-spofity_songs_summary
+kable(head(spofity_songs_summary))
 ```
 
+#### Duration
+
+@fig-duration shows that most songs are around 3-4 minutes. It seems like songs closer to 3 minutes are more popular but there isn't a huge correlation between duration of a song and it's popularity.
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
 spotify_songs_cleaned <- spotify_songs_cleaned |>
   mutate(duration_min = duration_ms / (1000 * 60))
 # converted milliseconds to minutes 
 ```
 
-Duration in comparison to popularity
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-duration
+#| fig-cap: "Track duration and popularity."
 ggplot(data = spotify_songs_cleaned, aes(x = track_popularity, y = duration_min)) +
-  geom_point(fill = "cornflowerblue") +
-  labs(title = "Duration vs Popularity",
+  geom_point() +
+  labs(title = "Duration vs Track Popularity (Top 10% of 2019 Songs)",
        x = "Track Popularity",
        y = "Minutes") +
   theme_minimal()
 ```
-Most songs are around 3-4 minutes. It seems like songs closer to 3 minutes are more popular but there isn't a huge correlation between duration of a song and it's popularity.
 
+#### Mode
 
-How do Tempo and Duration relate to Popularity 
-```{r}
-ggplot(data = spotify_songs_cleaned, aes(x = tempo, y = duration_min, color = track_popularity)) +
-  geom_point() +
-  scale_color_viridis_c() +
-  labs(title = "Popularity in Relation to Tempo and Duration",
-       x = "Tempo (BPD)",
-       y = "Duration (minutes)",
-       color = "Popularity") +
-  theme_minimal() 
-```
-
-### Mode vs Popularity
+@fig-mode shows the relationship of song mode (if it's major or minor) and the popularity of a song.
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-mode
+#| fig-cap: "Track mode and popularity."
 # Major is 1, minor is 0
 
 mode_popularity <- spotify_songs_cleaned |>
@@ -158,18 +191,26 @@ mode_popularity
 spotify_songs_cleaned |>
   mutate(mode = factor(mode, labels = c("minor", "major"))) |>
   ggplot(aes(x = track_popularity, group = mode, color = mode)) +
-  geom_density()
+  geom_density() + labs(
+    title = "Mode vs Track Popularity (Top 10% of 2019 Songs)",
+    x = "Track popularity",
+    y = "Density"
+  ) +theme_minimal()
 ```
 
-### Valence vs Popularity
+#### Valence
+
+@fig-valence shows the relationship between valence and song popularity.
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
+#| label: fig-valence
+#| fig-cap: "Track valence and popularity."
 spotify_songs_cleaned |>
   ggplot(aes(x = valence, y = track_popularity)) +
-  geom_point()
-
-spotify_songs_cleaned |>
-  ggplot(aes(x = valence)) +
-  geom_histogram()
+  geom_point() + theme_minimal() + labs(title = "Valence vs Track Popularity (Top 10% of 2019 Songs)",
+       x = "Valence", 
+       y = "Count") + theme_minimal()
 ```
-
