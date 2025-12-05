@@ -24,6 +24,12 @@ We can see that there are some repeat tracks in this data set, since the number 
 paste("Number of Tracks: ", nrow(spotify_songs_raw))
 paste("Number of Unique Tracks: ", length(unique(spotify_songs_raw$track_id)))
 ```
+ 
+ 
+Exploratory analysis part! To my understanding we’re trying to discover possible relationships and trends
+ 
+ 
+ 
 
 ### Data Wrangling
 
