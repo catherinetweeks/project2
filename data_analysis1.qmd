@@ -13,6 +13,133 @@ format: html
 
 # Set Up
 library(tidyverse)
+library(lubridate)
+
+
+```
+Exploratory Variables (Danceability and Energy)
+```{r}
+spotify_songs_cleaned |>
+select(track_popularity, danceability, energy) |>
+cor(use = "complete.obs")
+
+
+spotify_songs_cleaned |>
+ggplot(aes(x = danceability, y = track_popularity)) +
+geom_point(alpha = 0.6) +
+labs(
+title = "Danceability vs Track Popularity (Top 10% of 2019 Songs)",
+x = "Danceability",
+y = "Track Popularity"
+)
+
+spotify_songs_cleaned |>
+ggplot(aes(x = energy, y = track_popularity)) +
+geom_point(alpha = 0.6) +
+labs(
+title = "Energy vs Track Popularity (Top 10% of 2019 Songs)",
+x = "Energy",
+y = "Track Popularity"
+)
+
+```
+
+Visualizing Key and Loudness
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = key, y = track_popularity)) +
+  geom_point(position = position_jitter(seed=100)) +
+  theme_minimal() + 
+  labs(title = "Key and Track Popularity", 
+       x = "Key",
+       y = "Track Popularity")
+```
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = loudness, y = track_popularity)) +
+  #geom_point(position = position_jitter(seed=100)) +
+  geom_point(position = position_jitter(seed=100)) +
+  theme_minimal() + 
+  labs(title = "Loudness and Track Popularity", 
+       x = "Loudness",
+       y = "Track Popularity")
+```
+
+Different visualizations
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = key)) +
+  geom_bar() +
+  theme_minimal() + 
+  labs(title = "Analysis of keys in top songs", 
+       x = "Key")
+```
+
+Probably no relationship between popular songs and their key?
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = loudness)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() + 
+  labs(title = "Analysis of keys in top songs", 
+       x = "Loudness")
+```
+
+It looks like louder songs are popular
+```
+Tempo in comparison to popularity
+```{r}
+ggplot(data = spotify_songs_cleaned,
+       aes(x = tempo, y = track_popularity)) +
+  geom_point(alpha = 2, color = "cornflowerblue") +
+  labs(title = "Tempo vs Popularity",
+       x = "Tempo",
+       y = "Popularity") +
+  theme_minimal()
+```
+
+```{r}
+spofity_songs_summary <- spotify_songs_cleaned |>
+  group_by(tempo) |>
+  summarise(
+    avg_pop = mean(track_popularity, na.rm = TRUE),
+    max_pop = max(track_popularity, na.rm = TRUE),
+    min_pop = min(track_popularity, na.rm = TRUE),
+    number_of_songs = n()
+  )
+spofity_songs_summary
+```
+
+
+```{r}
+spotify_songs_cleaned <- spotify_songs_cleaned |>
+  mutate(duration_min = duration_ms / (1000 * 60))
+# converted milliseconds to minutes 
+```
+
+Duration in comparison to popularity
+```{r}
+ggplot(data = spotify_songs_cleaned, aes(x = track_popularity, y = duration_min)) +
+  geom_point(fill = "cornflowerblue") +
+  labs(title = "Duration vs Popularity",
+       x = "Track Popularity",
+       y = "Minutes") +
+  theme_minimal()
+
+```
+Most songs are around 3-4 minutes. It seems like songs closer to 3 minutes are more popular but there isn't a huge correlation between duration of a song and it's popularity.
+
+
+How do Tempo and Duration relate to Popularity 
+```{r}
+ggplot(data = spotify_songs_cleaned, aes(x = tempo, y = duration_min, color = track_popularity)) +
+  geom_point() +
+  scale_color_viridis_c() +
+  labs(title = "Popularity in Relation to Tempo and Duration",
+       x = "Tempo (BPD)",
+       y = "Duration (minutes)",
+       color = "Popularity") +
+  theme_minimal() 
 ```
 
 ### Mode vs Popularity
