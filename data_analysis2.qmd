@@ -17,3 +17,39 @@ library(lubridate)
 
 spotify_songs_cleaned <- read_csv("spotify_cleaned.csv")
 ```
+
+Variables for Analysis:
+
+- Energy
+- Loudness
+- Tempo
+- Danceability
+
+
+### Energy
+
+```{r}
+
+```
+
+
+### Loudness
+
+```{r}
+
+```
+
+
+### Tempo
+
+```{r}
+
+```
+
+
+### Danceability
+
+```{r}
+
+```
+
