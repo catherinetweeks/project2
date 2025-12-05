@@ -5,3 +5,30 @@ format: html
 ---
 
 ## Preliminary Data Analysis
+
+Exploratory Variables (Danceability and Energy)
+```{r}
+spotify_songs_cleaned |>
+select(track_popularity, danceability, energy) |>
+cor(use = "complete.obs")
+
+
+spotify_songs_cleaned |>
+ggplot(aes(x = danceability, y = track_popularity)) +
+geom_point(alpha = 0.6) +
+labs(
+title = "Danceability vs Track Popularity (Top 10% of 2019 Songs)",
+x = "Danceability",
+y = "Track Popularity"
+)
+
+spotify_songs_cleaned |>
+ggplot(aes(x = energy, y = track_popularity)) +
+geom_point(alpha = 0.6) +
+labs(
+title = "Energy vs Track Popularity (Top 10% of 2019 Songs)",
+x = "Energy",
+y = "Track Popularity"
+)
+
+```
