@@ -43,7 +43,31 @@ Variables for Analysis:
 ### Tempo
 
 ```{r}
+mean_tempo = spotify_songs_cleaned |>
+  summarize(mean_tempo = mean(tempo)) |>
+  pull()
 
+tempo_density <- spotify_songs_cleaned |>
+  ggplot(aes(x = tempo, y = ..density..)) +
+  geom_histogram(binwidth = 10) +
+  geom_density(color = "red") +
+  geom_vline(xintercept = mean_tempo, color = "blue") +
+  labs(title = "Tempo in the Top 10% Most Popular Spotify Songs, 2019",
+       x = "Tempo (bpm)",
+       y = "Proportion of Top 10% Songs") +
+  theme_minimal()
+
+tempo_plot <- spotify_songs_cleaned |>
+  ggplot(aes(x = tempo, y = track_popularity)) +
+  geom_point(position = "jitter", alpha = 0.3) +
+  geom_smooth(method = "loess", se = FALSE, color = "red") +
+  labs(title = "Tempo vs Popularity in the Top 10% Most Popular Spotify Songs, 2019",
+       x = "Tempo (bpm)",
+       y = "Popularity Rating (0-100)") +
+  theme_minimal()
+
+tempo_density
+tempo_plot
 ```
 
 
