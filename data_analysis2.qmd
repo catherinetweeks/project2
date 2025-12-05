@@ -5,3 +5,15 @@ format: html
 ---
 
 ## Overall Data Analysis
+
+```{r}
+#| warning: false
+#| message: false
+#| echo: false
+
+# Set Up
+library(tidyverse)
+library(lubridate)
+
+spotify_songs_cleaned <- read_csv("spotify_cleaned.csv")
+```

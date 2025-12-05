@@ -49,6 +49,7 @@ spotify_songs_cleaned <- spotify_songs_raw |>
   arrange(desc(song_percentile))
 
 ```
+
 Steps taken in data wrangling:
 
 - changed the variable `track_album_release_date` to a `Date` object
@@ -60,3 +61,8 @@ Steps taken in data wrangling:
 - filtered the data to only the top 10% of tracks
 
 NOTE: There are still some duplicate songs, songs that were released first as a single and then as part of an album, and therefore have different track ids.
+
+```{r}
+write_csv(spotify_songs_cleaned, "spotify_cleaned.csv")
+```
+

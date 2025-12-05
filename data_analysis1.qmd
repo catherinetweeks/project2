@@ -15,8 +15,9 @@ format: html
 library(tidyverse)
 library(lubridate)
 
-
+spotify_songs_cleaned <- read_csv("spotify_cleaned.csv")
 ```
+
 Exploratory Variables (Danceability and Energy)
 ```{r}
 spotify_songs_cleaned |>
@@ -81,12 +82,12 @@ Probably no relationship between popular songs and their key?
 ggplot(spotify_songs_cleaned, aes(x = loudness)) +
   geom_histogram(bins = 20) +
   theme_minimal() + 
-  labs(title = "Analysis of keys in top songs", 
+  labs(title = "Analysis of loudness in top songs", 
        x = "Loudness")
 ```
 
 It looks like louder songs are popular
-```
+
 Tempo in comparison to popularity
 ```{r}
 ggplot(data = spotify_songs_cleaned,
@@ -97,6 +98,7 @@ ggplot(data = spotify_songs_cleaned,
        y = "Popularity") +
   theme_minimal()
 ```
+songs that have tempos around 100 bpm seem to be more popular. There are a few songs around the 175 bmp that are more popular.
 
 ```{r}
 spofity_songs_summary <- spotify_songs_cleaned |>
@@ -125,7 +127,6 @@ ggplot(data = spotify_songs_cleaned, aes(x = track_popularity, y = duration_min)
        x = "Track Popularity",
        y = "Minutes") +
   theme_minimal()
-
 ```
 Most songs are around 3-4 minutes. It seems like songs closer to 3 minutes are more popular but there isn't a huge correlation between duration of a song and it's popularity.
 
@@ -166,5 +167,9 @@ spotify_songs_cleaned |>
 spotify_songs_cleaned |>
   ggplot(aes(x = valence, y = track_popularity)) +
   geom_point()
+
+spotify_songs_cleaned |>
+  ggplot(aes(x = valence)) +
+  geom_histogram()
 ```
 
