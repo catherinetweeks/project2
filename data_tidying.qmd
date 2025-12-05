@@ -49,6 +49,7 @@ spotify_songs_cleaned <- spotify_songs_raw |>
   arrange(desc(song_percentile))
 
 ```
+
 Steps taken in data wrangling:
 
 - changed the variable `track_album_release_date` to a `Date` object
