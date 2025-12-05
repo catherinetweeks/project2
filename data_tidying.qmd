@@ -11,8 +11,6 @@ format: html
 #| message: false
 #| echo: false
 
-# Import libraries and set up
-
 library(tidyverse)
 library(lubridate)
 

@@ -13,6 +13,66 @@ format: html
 
 # Set Up
 library(tidyverse)
+library(lubridate)
+
+spotify_songs_raw <- read.csv("spotify_songs.csv")
+
+spotify_songs_cleaned <- spotify_songs_raw |>
+  mutate(track_album_release_date = ymd(track_album_release_date)) |>
+  select(track_id, track_name, track_artist, track_popularity, track_album_release_date, danceability, energy, key,
+         loudness, mode, valence, tempo, duration_ms) |>
+  filter(year(track_album_release_date) == 2019) |>
+  filter(str_detect(track_name,
+                    "Remix|Remaster|Remastered|REMIX|remix") == FALSE) |>
+  unique() |>
+  mutate(song_percentile = percent_rank(track_popularity)*100) |>
+  filter(song_percentile >= 90) |>
+  arrange(desc(song_percentile))
+
+```
+
+Visualizing Key and Loudness
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = key, y = track_popularity)) +
+  geom_point(position = position_jitter(seed=100)) +
+  theme_minimal() + 
+  labs(title = "Key and Track Popularity", 
+       x = "Key",
+       y = "Track Popularity")
+```
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = loudness, y = track_popularity)) +
+  #geom_point(position = position_jitter(seed=100)) +
+  geom_point(position = position_jitter(seed=100)) +
+  theme_minimal() + 
+  labs(title = "Loudness and Track Popularity", 
+       x = "Loudness",
+       y = "Track Popularity")
+```
+
+Different visualizations
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = key)) +
+  geom_bar() +
+  theme_minimal() + 
+  labs(title = "Analysis of keys in top songs", 
+       x = "Key")
+```
+
+Probably no relationship between popular songs and their key?
+
+```{r}
+ggplot(spotify_songs_cleaned, aes(x = loudness)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() + 
+  labs(title = "Analysis of keys in top songs", 
+       x = "Loudness")
+```
+
+It looks like louder songs are popular
 ```
 
 ### Mode vs Popularity
