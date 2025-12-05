@@ -17,6 +17,7 @@ library(lubridate)
 
 
 ```
+
 Exploratory Variables (Danceability and Energy)
 ```{r}
 spotify_songs_cleaned |>
@@ -86,7 +87,7 @@ ggplot(spotify_songs_cleaned, aes(x = loudness)) +
 ```
 
 It looks like louder songs are popular
-```
+
 Tempo in comparison to popularity
 ```{r}
 ggplot(data = spotify_songs_cleaned,
@@ -97,6 +98,7 @@ ggplot(data = spotify_songs_cleaned,
        y = "Popularity") +
   theme_minimal()
 ```
+songs that have tempos around 100 bpm seem to be more popular. There are a few songs around the 175 bmp that are more popular.
 
 ```{r}
 spofity_songs_summary <- spotify_songs_cleaned |>
