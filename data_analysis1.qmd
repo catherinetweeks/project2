@@ -127,7 +127,6 @@ ggplot(data = spotify_songs_cleaned, aes(x = track_popularity, y = duration_min)
        x = "Track Popularity",
        y = "Minutes") +
   theme_minimal()
-
 ```
 Most songs are around 3-4 minutes. It seems like songs closer to 3 minutes are more popular but there isn't a huge correlation between duration of a song and it's popularity.
 
