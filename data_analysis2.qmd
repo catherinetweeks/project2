@@ -5,3 +5,18 @@ format: html
 ---
 
 ## Overall Data Analysis
+
+```{r}
+spotify_cleaned <- read_csv("spotify_cleaned.csv")
+```
+
+```{r}
+energy_histogram <- spotify_cleaned |>
+  ggplot(aes(x = energy)) +
+  geom_histogram(binwidth = .05, color = "white") +
+  theme_minimal() +
+  labs(title = "Energy vs Track Popularity (Top 10% of Most Popular 2019 Spotify Songs)",
+       x = "Energy",
+       y = "Track Popularity")
+energy_histogram
+```
