@@ -42,9 +42,8 @@ energy_histogram
 
 ### Loudness
 
-
 ```{r}
-ggplot(spotify_cleaned,
+loudness_plot <- ggplot(spotify_cleaned,
        aes(x = loudness, y = track_popularity)) +
   geom_point(alpha = 0.6) +
   theme_minimal() +
@@ -52,29 +51,45 @@ ggplot(spotify_cleaned,
        x = "Loudness",
        y = "Track Popularity")
 
+loudness_plot
 ```
 Track popularity seems to rise for loudness of song ranges between -13 to -4, as track popularity rises above 90. Songs with loudness rating outside of that range seems to have track popularities below 90, indicating that there is a correlation between loudness of a song and how many streams it receives.
 
 
 ### Tempo
 
-```{r}
-#test
+``` {r}
+tempo_plot <- spotify_cleaned |>
+  ggplot(aes(x = tempo, y = track_popularity)) +
+  geom_point(position = "jitter", alpha = 0.3) +
+  geom_smooth(method = "loess", se = FALSE, color = "red") +
+  labs(title = "Tempo vs Popularity in the Top 10% Most Popular Spotify Songs, 2019",
+       x = "Tempo (bpm)",
+       y = "Popularity Rating (0-100)") +
+  theme_minimal()
+
+tempo_plot
 ```
 
 
 ### Danceability
 
 ```{r}
-spotify_songs_cleaned |>
+mean_dance = spotify_cleaned |>
+  summarize(mean_dance = mean(danceability)) |>
+  pull()
+
+dance_plot <- spotify_cleaned |>
   ggplot(aes(x = danceability, y = track_popularity)) +
   geom_point(position = "jitter") +
-  geom_vline(xintercept = 0.75, color = "red") +
+  geom_vline(xintercept = mean_dance, color = "red") +
   labs(
-  title = "Danceability vs Track Popularity (Top 10% of 2019 Songs)",
+  title = "Danceability vs Track Popularity in the Top 10% Most Popular Spotify Songs, 2019",
   x = "Danceability",
   y = "Track Popularity"
   ) + 
   theme_minimal()
+
+dance_plot
 ```
 
