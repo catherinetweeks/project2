@@ -1,0 +1,9 @@
+"0","energy_histogram <- spotify_cleaned |>"
+"0","  ggplot(aes(x = energy)) +"
+"0","  geom_histogram(binwidth = .05, color = ""white"") +"
+"0","  theme_minimal() +"
+"0","  labs(title = ""Energy vs Track Popularity (Top 10% of Most Popular 2019 Spotify Songs)"","
+"0","       x = ""Energy"","
+"0","       y = ""Track Popularity"")"
+"2","Error: object 'spotify_cleaned' not found
+"
