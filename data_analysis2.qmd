@@ -35,9 +35,18 @@ Variables for Analysis:
 
 ### Loudness
 
+
 ```{r}
+ggplot(spotify_songs_cleaned,
+       aes(x = loudness, y = track_popularity)) +
+  geom_point(alpha = 0.6) +
+  theme_minimal() +
+  labs(title = "Loudness and Track Popularity",
+       x = "Loudness",
+       y = "Track Popularity")
 
 ```
+Track popularity seems to rise for loudness of song ranges between -13 to -4, as track popularity rises above 90. Songs with loudness rating outside of that range seems to have track popularities below 90, indicating that there is a correlation between loudness of a song and how many streams it receives.
 
 
 ### Tempo
@@ -53,3 +62,4 @@ Variables for Analysis:
 
 ```
 
+=======
