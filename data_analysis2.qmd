@@ -15,7 +15,7 @@ format: html
 library(tidyverse)
 library(lubridate)
 
-spotify_songs_cleaned <- read_csv("spotify_cleaned.csv")
+spotify_cleaned <- read_csv("spotify_cleaned.csv")
 ```
 
 Variables for Analysis:
@@ -44,7 +44,7 @@ energy_histogram
 
 
 ```{r}
-ggplot(spotify_songs_cleaned,
+ggplot(spotify_cleaned,
        aes(x = loudness, y = track_popularity)) +
   geom_point(alpha = 0.6) +
   theme_minimal() +
@@ -59,14 +59,22 @@ Track popularity seems to rise for loudness of song ranges between -13 to -4, as
 ### Tempo
 
 ```{r}
-
+#test
 ```
 
 
 ### Danceability
 
 ```{r}
-
+spotify_songs_cleaned |>
+  ggplot(aes(x = danceability, y = track_popularity)) +
+  geom_point(position = "jitter") +
+  geom_vline(xintercept = 0.75, color = "red") +
+  labs(
+  title = "Danceability vs Track Popularity (Top 10% of 2019 Songs)",
+  x = "Danceability",
+  y = "Track Popularity"
+  ) + 
+  theme_minimal()
 ```
 
-=======
