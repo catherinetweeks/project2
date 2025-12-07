@@ -54,7 +54,7 @@ tempo_density <- spotify_songs_cleaned |>
   geom_vline(xintercept = mean_tempo, color = "blue") +
   labs(title = "Tempo in the Top 10% Most Popular Spotify Songs, 2019",
        x = "Tempo (bpm)",
-       y = "Proportion of Top 10% Songs") +
+       y = "Density of Top 10% Songs") +
   theme_minimal()
 
 tempo_plot <- spotify_songs_cleaned |>
