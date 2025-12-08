@@ -7,9 +7,10 @@ format: html
 ## Overall Data Analysis
 
 ```{r}
-spotify_cleaned <- read_csv("spotify_cleaned.csv")
+spotify_cleaned <- read_csv("/Users/joan/SDS 192/SDS 192/Project 2/spotify_cleaned.csv")
 ```
 
+Histogram
 ```{r}
 energy_histogram <- spotify_cleaned |>
   ggplot(aes(x = energy)) +
@@ -20,3 +21,9 @@ energy_histogram <- spotify_cleaned |>
        y = "Track Popularity")
 energy_histogram
 ```
+
+
+
+
+
+
